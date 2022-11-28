@@ -1,0 +1,42 @@
+
+1. Explain why functional components are better than class based components
+We can code less if we use functional components.There is no need to bind every function that we use,as in like class components.Thus less code,easy debugging and more readability makes functional components better than class components.
+
+2. Create a component called Counter that displays a number on screen with two buttons ( +, - ).
+   - On clicking of those buttons, the number on screen should increase or decrease by 1.
+   - Default value of that number should be 0 and parent should be able to override default value using as prop called defaultValue.
+   
+import React, { useState } from 'react';
+
+function Example(props) {
+  // Declare a new state variable, which we'll call "count"
+  // const val=this.prop.dv;
+  
+  
+  const [count, setCount] = useState(props.dv);
+
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>
+        +
+      </button>
+      <button onClick={() => setCount(count - 1)}>
+       -
+      </button>
+    </div>
+  );
+}
+
+
+function App() {
+  return(
+
+    <div>
+      <Example dv={10} />
+    </div>
+    
+  );
+}
+
+export default App;

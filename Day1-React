@@ -1,0 +1,37 @@
+
+2)function Greetings(props)
+{
+  return (
+    <div>
+      <h1>Hello, {props.name}</h1>
+      {
+        props.date<12 &&
+        <h1>Good Morning!</h1>
+      }
+       {
+        props.date>12 && props.date<16&&
+        <h1>Good afternoon!</h1>
+      }
+       {
+        props.date>12 &&
+        <h1>Good Evening!</h1>
+      }
+     
+  </div>
+  
+
+  );
+}
+
+
+function App() {
+  return(
+    <div>
+      <Greetings  name="ammu" date={new Date().getHours()}/>
+    </div>
+  );
+}
+
+export default App;
+
+

@@ -1,0 +1,226 @@
+
+						****Lists****
+
+- Create component called ListView which Render a list of numbers
+- Default start and end numbers are 1 and 10, they should be able to be overridden from props
+- There shouldn't be any warnings in the browser console.
+
+
+
+function Listview(props)
+{
+  const ans=props.array;
+  const ele=ans.map(
+    (x)=>
+    <li key={x.toString()}>
+    {x}
+  </li>
+    
+  );
+  return <ul>{ele}</ul>;
+
+}
+
+const numbers=[1,2,3,4,5,6,7,8];
+
+function App() {
+  return(
+    <div>
+      <Listview array={numbers} />
+    </div>
+    
+  );
+}
+
+export default App;
+
+
+
+- Explain the function and importance of key prop in a list
+To identify a list item,react uses keys.Keys are unique for every element in the list.we can use same keys for elements in different lists.If you want to use these keys in another component,then you need to send them explicitly to that component as a prop.With keys we can get more hand on component.
+
+						***Forms****
+1. Build a basic signup form which takes name, email, password and confirm password fields.
+
+
+2. Add validations on submit button, validations are:
+
+- no field should be empty
+- password and confirm password should be same
+- email should have @ and . symbols in it.
+
+3. Show errors if the validations fail
+
+Values entered in the input fields should be stored in state.
+Error values should not be stored in state but should be calculated from above state.
+
+
+
+
+
+import React from "react";
+
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {value: '',mail:'',pas:'',cpas:''};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleChange1 = this.handleChange1.bind(this);
+    this.handleChange2 = this.handleChange2.bind(this);
+    this.handleChange3 = this.handleChange3.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleChange1(event) {
+    this.setState({mail: event.target.value});
+  }
+  handleChange2(event) {
+    this.setState({pas: event.target.value});
+  }
+  handleChange3(event) {
+    this.setState({cpas: event.target.value});
+  }
+  handleSubmit(event) {
+
+    if(this.state.pas !== this.state.cpas)
+    {
+      alert('Hey,enter matching passwords');
+    }
+    alert("Hurray!!Successfull submission");
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} required />
+        </label>
+        <label>
+          Email:
+          <input type="email" value={this.state.mail} onChange={this.handleChange1} required />
+        </label>
+        <label>
+          Password:
+          <input type="password"  value={this.state.pas} onChange={this.handleChange2} required/>
+        </label>
+        <label>
+         Confirm Password:
+          <input type="password"  value={this.state.cpas} onChange={this.handleChange3} required/>
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
+
+function App() {
+  return(
+    <div>
+      <NameForm />
+    </div>
+    
+  );
+}
+
+export default App;
+
+
+					***Lifting State Up***
+1. Explain when to lift state up to a parent component.
+When we want the data in 2 or more components to be in sync,we can define the state in their nearest ancestor(parent component)and pass these as props to children components.This way the data which is common among these components will reflect the change once. 
+
+2. Lift the state from all above components to a component called Parent.
+   - Call <Parent /> in App and all state should be managed in Parent
+   - state updaters should be sent as props to children and should be updated from children.
+   
+   import React from "react";
+
+class C1 extends React.Component{
+  constructor(props) {
+    super(props);
+    this.ha = this.ha.bind(this);
+  }
+
+  ha(e){
+    const res=this.props.n+1;
+    this.props.handleChange(res);
+    e.preventDefault();
+  }
+  render()
+  {
+    return(
+      <form>
+        <button onClick={this.ha}>Click1</button>
+      </form>
+    );
+  }
+}
+
+class C2 extends React.Component{
+  constructor(props) {
+    super(props);
+    this.ha = this.ha.bind(this);
+  }
+
+  ha(e){
+    const res=this.props.nu+2;
+    this.props.handleChange(res);
+    e.preventDefault();
+  }
+  render()
+  {
+    return(
+      <form>
+        <button onClick={this.ha}>Click 2</button>
+      </form>
+    );
+  }
+}
+
+
+class Parent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {num:0};
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(newnum) {
+    console.log(newnum);
+    this.setState({num:newnum});
+  }
+
+  render() {
+    return (
+     <div>
+      <C1 n={this.state.num} handleChange={this.handleChange}/>
+      <C2 nu={this.state.num} handleChange={this.handleChange}/>
+      The number now is {this.state.num}
+     </div>
+    );
+  }
+}
+
+
+function App() {
+  return(
+
+    <div>
+      <Parent  />
+    </div>
+    
+  );
+}
+
+export default App;
+
+
+
+						
